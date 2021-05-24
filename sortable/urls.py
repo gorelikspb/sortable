@@ -18,12 +18,8 @@ from django.urls import path, include
 from table import views
 
 urlpatterns = [
-    # path('table/', views.packs),
     path('', views.packs),
     path('api/',  views.PackList.as_view()),
-    # path('api/', include('table.urls')),
-    # path("packs/", table_views.PackList, name="packs"),
-
     path('admin/', admin.site.urls),
 
 ]
