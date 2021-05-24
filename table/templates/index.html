@@ -1,0 +1,170 @@
+<!DOCTYPE html>
+<html>
+ <head>
+   <title>students api</title>
+  <style>
+    table {
+    margin: 3px;
+    }
+table th {
+    font-weight: bold;
+    cursor: pointer;
+}
+table th, table td {
+    padding: 3px;
+    border: 1px solid #000;
+}
+
+  </style>
+
+   <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.3.1/jquery.min.js"></script>
+ </head>
+<body>
+<!-- <div>
+   <button class="apireq">click me </button> 
+</div>
+<div id="jsonresp" style="margin-top: 100px">
+   <p><label> Date :</label> <span id="date"></span></p>
+   <p><label> Name :</label> <span id="name"></span></p>
+   <p><label> Amount :</label> <span id="amount"></span></p>
+   <p><label> Distance : </label> <span id="distance"></span></p> 
+</div>
+    
+
+<section class="pt100 pb100">
+  <div class="container">
+       <div class="vertical-align">
+           <div class="col-md-12">
+               <table class="table table-striped">
+                    <thead>
+                         <tr>
+                              <th>Date</th>
+                              <th>Name</th>
+                              <th>Amount</th>
+                              <th>Distance</th>
+                         </tr>
+                    </thead>
+                    <tbody>
+
+                    </tbody>
+               </table>
+           </div>
+       </div>
+   </div>
+</section> -->
+
+<table>
+  <thead id="headings">
+      <tr>
+          <th >Date</th>
+          <th data-attr="name">Name</th>
+          <th data-attr="amount">Amount</th>
+          <th data-attr="distance">Distance</th>
+      </tr>
+
+  </thead>
+  <tbody id="results">
+      <!-- this will be auto-populated -->
+  </tbody>
+</table>
+
+
+
+</body>
+</html>
+
+<script>
+
+function testAjax() {
+    var result="";
+    $.ajax({
+      url : "/api/",
+      dataType: "json",
+      async: false,  
+      success:function(data) {
+         result = data; 
+      }
+   });
+   return result;
+}
+
+let arr = testAjax();
+
+
+
+$(function() {
+    $('#headings th').on('click', function() {
+        var attr = $(this).attr('data-attr');
+        var asc = (!$(this).attr('data-asc')); // switch the order, true if not set
+        
+        // clear any previous sort order indicators
+        $('#headings th').each(function() {
+            $(this).removeAttr('data-asc');
+        });
+        // set sort order indicator
+        if (asc) {
+            $(this).attr('data-asc', 'asc');
+        }
+
+        sortResults(attr, asc);
+    });
+        
+    renderResults();
+});
+
+function sortResults(prop, asc) {
+    arr.sort(function(a, b) {
+        if (asc) {
+            return (a[prop] > b[prop]) ? 1 : ((a[prop] < b[prop]) ? -1 : 0);
+        } else {
+            return (b[prop] > a[prop]) ? 1 : ((b[prop] < a[prop]) ? -1 : 0);
+        }
+    });
+    renderResults();
+}
+
+function renderResults () {
+    var html = '';
+    for (var e in arr) {
+        html += '<tr>'
+            +'<td>'+arr[e].date+'</td>'
+            +'<td>'+arr[e].name+'</td>'
+            +'<td>'+arr[e].amount+'</td>'
+            +'<td>'+arr[e].distance+'</td>'
+        +'</tr>';
+    }
+    $('#results').html(html);
+}
+
+// document.write(data[0].name);
+
+
+// $('.apireq').click( function() {
+//     $.ajax({
+//              url : "/api/",
+//              dataType: "json",
+//              success : function (data) {
+               
+//               $("tbody").empty();
+//               $.each(data, function (key, value) {
+//                   // var priceKey = key;
+//                   let packDate = value.date;
+//                   let packName = value.name;
+//                   let packAmount = value.amount;
+//                   let packDistance = value.distance;
+//                   $("tbody").append(
+//                       "<tr><td>" + packDate + "</td><td>" + packName + "</td><td>" + packAmount + "</td><td>" + packDistance + "</td></tr>"
+//                   )
+//                 })
+//                       // $('#date').text( data[0].date);
+//                       // $('#name').text( data[0].name);
+//                       // $('#amount').text( data[0].amount);
+//                       // $('#distance').text( data[0].distance);
+
+
+
+//                     }
+//                  });
+//              });
+
+</script>
